@@ -38,15 +38,15 @@ const TeacherAttendance = () => {
     }
   };
 
-  const loadStudents = async (classId) => {
+  const loadStudents = async (classId, targetDate = date) => {
     setLoading(true);
     try {
       const res = await studentAPI.getByClass(classId);
       const studentData = res.data.data || [];
       setStudents(studentData);
 
-      // Load existing attendance for this date
-      const attRes = await attendanceAPI.getByClassAndDate(classId, date);
+      // Load existing attendance for the selected date
+      const attRes = await attendanceAPI.getByClassAndDate(classId, targetDate);
       const attData = attRes.data.data || [];
       const attMap = {};
       attData.forEach(a => {
@@ -59,6 +59,12 @@ const TeacherAttendance = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDateChange = (e) => {
+    const newDate = e.target.value;
+    setDate(newDate);
+    if (selectedClass) loadStudents(selectedClass, newDate);
   };
 
   const handleStatusChange = (studentId, status) => {
@@ -126,7 +132,7 @@ const TeacherAttendance = () => {
             type="date"
             className="input max-w-xs"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={handleDateChange}
           />
         </div>
       </div>
