@@ -68,7 +68,7 @@ const Home = () => {
 
   const site = slides[activeHero] || {};
   const heroImage = site.heroImage
-    ? site.heroImage.startsWith("http")
+    ? site.heroImage.startsWith("data:") || site.heroImage.startsWith("http")
       ? site.heroImage
       : assetUrl(site.heroImage)
     : schoolImg;
