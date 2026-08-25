@@ -56,7 +56,12 @@ const News = () => {
                   <div className="flex items-center gap-4 p-4 lg:p-5 hover:bg-gray-50">
                     {a.photo ? (
                       <img
-                        src={assetUrl(a.photo)}
+                        src={
+                          a.photo.startsWith("data:") ||
+                          a.photo.startsWith("http")
+                            ? a.photo
+                            : assetUrl(a.photo)
+                        }
                         alt={a.title}
                         className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
                       />
